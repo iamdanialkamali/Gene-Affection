@@ -763,15 +763,90 @@ struct dtringNode{
     dtringNode * next;
 };
 */
+string getdata(char mystr[200],int i){
+    for (int j = 0; j <200 ; ++j) {
 
+    }
+
+}
 int main() {
     dict dict1;
     dictNode *root = NULL;
 
     while(true){
         char mystr[200];
-        getline(cin,mystr);
+        cin.getline(mystr,200);
+        if(mystr[0]=='A'){
+            if(mystr[7]==' '){
+                dtring name1;
+                int x1,x2 ;
+                string a ="";
+                int j =0;
+                for (int i = 8; i <200 ; ++i) {
+                    if(j==0)
+                        name1.add(mystr[i]);
+                    if(mystr[i]==' ') {
+                        if(a!="" and j==1){
+                            x1=stoi(a);
+                        }
+                        if(a!="" and j==2){
+                            x2=stoi(a);
+                        }
+                        j++;
+                        a="";
+                    }
+                    if(j==1)
+                        a+=mystr[i];
+                    if(j==2)
+                        a+=mystr[i];
+                    else if(j>2){
+                        break;
+                    }
+                }
+                root=dict1.Insert(x1,x2,name1,root);
+            }
+            if(mystr[7]=='A'){
+                int j =0;
+                dtring name1;
+                dtring name2;
+                for (int i = 13; i <200 ; ++i) {
+                    if(j==0 and mystr[i]!=' ' ){
+                        name1.add(mystr[i]);
+                    }
+                    if(mystr[i]==' ' and j==0){
+                        j++;
+                    }
+                    if(j==1 and mystr[i]!=' ' ){
+                        name2.add(mystr[i]);
+                    }if(mystr[i]==' ' and j==1){
+                        break;
+                    }
 
+
+                }
+                root =dict1.AddGeneAlias(name1,name2,root);
+            }
+
+        }if(mystr[0]=='R'){
+            dtring name;
+            for (int i = 11; i <200 ; ++i) {
+                if(mystr[i]==' '){
+                    break;
+                }
+                name.add(mystr[i]);
+            }
+            root = dict1.RemoveAliasName(name,root);
+        }
+        if(mystr[0]=='P'){
+            dtring name ;
+            for (int i = 14; i <200 ; ++i) {
+                if(mystr[i]==' '){
+                    break;
+                }
+                name.add(mystr[i]);
+            }
+            printall(dict1.Search(name,root)->gene);
+        }
     }
     dtring dtring1;
     string string1="ABC";
