@@ -1287,6 +1287,14 @@ public:
             return false;
         }
     }
+    void print(){
+        Charnode * temp  = root->next;
+        while (temp){
+            cout<<temp->data;
+            temp=temp->next;
+        }
+
+    }
 };
 struct Namenode{
     Namenode(){}
@@ -1356,9 +1364,12 @@ public:
     }
 };
 struct Gene{
+    list<Gene*>Before;
+    int lvl=0;
     int x1,x2;
     list<Gene*>Connected;
     NameList Names;
+    bool visited =false;
 };
 struct dictNode{
     Charlist* name;
@@ -1601,15 +1612,94 @@ public:
 
 };
 
+void bfs (Gene * gene,int lenght){
+    list<Gene*> queue ={};
+    gene->visited = true ;
+    queue.push_back(gene);
+    Gene* temp ;
+    temp = gene;
+    while (!queue.empty()){
+        temp = queue.front();
+        //temp->Names.root->name->print();
+        queue.pop_front();
+        for(Gene* gene1 : temp->Connected){
+            if(gene1==gene && temp->lvl<lenght ){
+                temp->Before.push_back(temp);
+                for(Gene* gene2:temp->Before){
+
+                gene2->Names.root->name->print();
+                    cout<<"-->";
+                }
+                gene->Names.root->name->print();
+                cout<<'\n';
+            }
+            if(gene1->visited==false){
+                queue.push_back(gene1);
+                gene1->visited= true ;
+                gene1->lvl=temp->lvl+1;
+                gene1->Before=temp->Before;
+                gene1->Before.push_back(temp);
+
+            }
+        }
+    }
+}
+
 int main(){
-    dictNode *root = NULL;
-    dict *dict1= new dict();
-    Charlist *charlist1 = new Charlist("Arman");
-    Charlist *charlist2 = new Charlist("Danial");
-    Charlist *charlist3 = new Charlist("Amir");
-    root = dict1->Insert(5,8,charlist1,root);
-    root = dict1->Insert(41,15,charlist2,root);
-    root = dict1->AddGeneAlias(charlist1,charlist3,root);
+
+    Charlist *charlist1 = new Charlist("A");
+    Charlist *charlist2 = new Charlist("B");
+    Charlist *charlist3 = new Charlist("C");
+    Charlist *charlist4 = new Charlist("D");
+    Charlist *charlist5 = new Charlist("E");
+    Charlist *charlist6 = new Charlist("F");
+    Charlist *charlist7 = new Charlist("G");
+
+    Gene *gene1 = new Gene();
+    gene1->x1=1;
+    gene1->x2=6;
+    gene1->Names.insert(charlist1);
+    Gene *gene2 = new Gene();
+    gene2->x1=2;
+    gene2->x2=6;
+    gene2->Names.insert(charlist2);
+    Gene *gene3 = new Gene();
+    gene3->x1=3;
+    gene3->x2=6;
+    gene3->Names.insert(charlist3);
+    Gene *gene4 = new Gene();
+    gene4->x1=4;
+    gene4->x2=6;
+    gene4->Names.insert(charlist4);
+    Gene *gene5 = new Gene();
+    gene5->x1=5;
+    gene5->x2=6;
+    gene5->Names.insert(charlist5);
+    Gene *gene6 = new Gene();
+    gene6->x1=6;
+    gene6->x2=6;
+    gene6->Names.insert(charlist6);
+
+
+    gene1->Connected.push_back(gene2);
+    gene2->Connected.push_back(gene3);
+    gene3->Connected.push_back(gene4);
+    //gene2->Connected.push_back(gene4);
+    //gene2->Connected.push_back(gene3);
+    gene4->Connected.push_back(gene1);
+    gene3->Connected.push_back(gene1);
+    bfs(gene1,4);
+    return  0 ;
+//}
+//int main(){
+//    dictNode *root = NULL;
+//    dict *dict1= new dict();
+//    Charlist *charlist1 = new Charlist("Arman");
+//    Charlist *charlist2 = new Charlist("Danial");
+//    Charlist *charlist3 = new Charlist("Amir");
+//    root = dict1->Insert(5,8,charlist1,root);
+//    root = dict1->Insert(41,15,charlist2,root);
+//    root = dict1->AddGeneAlias(charlist1,charlist3,root);
     //root = dict1->Splay(charlist1,root);
 //    root = dict1->Search(charlist1,root);
 //    root = dict1->Search(charlist2,root);
@@ -1629,9 +1719,9 @@ int main(){
 //    Gene * gene3 =root->gene;
 //    dict1->connect(gene1,gene2);
 //    dict1->connect(gene1,gene3);
-    root = dict1->regulate(charlist1,charlist2,root);
-    root = dict1->regulate(charlist1,charlist3,root);
-    root = dict1->donateRegulate(charlist1,charlist3,root);
-
-    return 0;
+//    root = dict1->regulate(charlist1,charlist2,root);
+//    root = dict1->regulate(charlist1,charlist3,root);
+//    root = dict1->donateRegulate(charlist1,charlist3,root);
+//
+//    return 0;
 }
